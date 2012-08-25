@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="cormenTree" default="jar" basedir=".">
+  <target name="clean">
+    <delete file="./tree.jar"/>
+    <delete dir="./build"/>
+    <mkdir dir="./build"/>
+  </target>
+
+  <target name="compile" depends="clean">
+    <javac srcdir="./src" destdir="./build" includeantruntime="false" debug="on"/>
+  </target>
+
+  <target name="jar" depends="compile">
+    <jar basedir="./build" jarfile="./tree.jar"/>
+  </target>
+
+  <!--
+  <target name="view">
+    <java jvm="/usr/bin/java" classname="tree.view.Visualizer" classpath="tree.jar"/>
+  </target>
+  -->
+</project>
