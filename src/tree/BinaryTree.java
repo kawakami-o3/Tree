@@ -1,6 +1,8 @@
 package tree;
 
 import java.util.List;
+import java.util.Random;
+import java.util.Collections;
 import java.util.ArrayList;
 
 public class BinaryTree {
@@ -69,12 +71,13 @@ public class BinaryTree {
   private void inorderWalk(Node x) {
     if (x!=null) {
       inorderWalk(x.getLeft());
-      System.out.print(" "+x.getKey());
+      System.out.print(", "+x.getKey());
       inorderWalk(x.getRight());
     }
   }
 
   public Node search(Long k) {
+    System.out.println("search-root> "+(root == null ? null : ""+root.getKey()+" "+root.getRight()+" "+root.getLeft()));
     return search(root, k);
   }
 
@@ -82,6 +85,7 @@ public class BinaryTree {
     if (x==null || k.equals(x.getKey())) {
       return x;
     }
+    System.out.println("search> "+x.getKey()+" "+x.getRight()+" "+x.getLeft());
     if (k < x.getKey()) {
       return search(x.getLeft(),k);
     } else {
@@ -241,6 +245,18 @@ public class BinaryTree {
 
     if (y!=z) {
       z.setKey(y.getKey());
+      // y.p <- z.p
+      // y.left <- z.left
+      // y.right <- z.right
+      // z.left.p <- y
+      // z.right.p <- y
+      // if z.p != nil
+      //   if z.p.left == z
+      //     z.p.left <- y
+      //   else
+      //     z.p.right <- y
+      //
+      // return z
     }
 
     return y;
@@ -264,7 +280,7 @@ public class BinaryTree {
         if (i==depths.get(j)) {
           System.out.printf("%5d",nodes.get(j).getKey());
         } else {
-          System.out.print("     ");
+          System.out.print("    ");
         }
       }
       System.out.println("");
@@ -279,7 +295,6 @@ public class BinaryTree {
     }
     return result;
   }
-
 
   public static void main(String[] args) {
     //BinaryTree<Long> tree=new BinaryTree<Long>(new Node<Long>(10L));
@@ -301,12 +316,104 @@ public class BinaryTree {
     System.out.println(tree.maximumRec(tree.getRoot()).getKey());
     System.out.println("---");
 */
-
+/*
     BinaryTree tree = BinaryTree.create(15L,6L,18L,3L,7L,17L,20L,2L,4L,13L,9L);
     tree.inorderWalk();
     System.out.println(tree.search(3L).getKey());
     tree.deleteNode(tree.search(3L));
     tree.inorderWalk();
+    */
+
+    BinaryTree tree = new BinaryTree();
+    long seed = 1828191884974591589L; // new Random().nextLong();
+    Random r = new Random(seed);
+    List<Long> keys = new ArrayList<Long>();
+    for (int i=0 ; i<12 ; i++) {
+      Long l = r.nextLong();
+      for (int j=0 ; j<keys.size() ; j++) {
+        if (l.equals(keys.get(j))) {
+          continue;
+        }
+      }
+      keys.add(l);
+      tree.insert(new Node(l));
+    }
+
+    List<Long> tmpList = new ArrayList<Long>(keys);
+    Collections.sort(tmpList);
+    System.out.println(tmpList);
+    tree.inorderWalk();
+    //
+    long time = 0;
+    for (int i=0 ; i<10 ; i++) {
+      int idx = r.nextInt(keys.size());
+      System.out.println("loop--> "+i+" "+keys.get(idx));
+      Node n = tree.search(keys.get(idx));
+
+      tree.inorderWalk();
+      if (n==null) {
+        System.out.println("null> "+i+" "+keys.get(idx));
+        System.out.println(seed);
+        System.out.println("---------------------------------------------------------");
+        for (Node n : tree.getListInorderWalk()) {
+          System.out.println(""+n.getKey()+" "+n.getParent());
+        }
+        System.out.println("---------------------------------------------------------");
+      }
+
+      long start = System.currentTimeMillis();
+      tree.deleteNode(n);
+      time += System.currentTimeMillis()-start;
+      keys.remove(idx);
+    }
+    System.out.println(time);
+
+    /* 
+    BinaryTree tree = new BinaryTree();
+    long seed = 1828191884974591589L; // new Random().nextLong();
+    Random r = new Random(seed);
+    List<Long> keys = new ArrayList<Long>();
+    for (int i=0 ; i<12 ; i++) {
+      Long l = r.nextLong();
+      for (int j=0 ; j<keys.size() ; j++) {
+        if (l.equals(keys.get(j))) {
+          continue;
+        }
+      }
+      keys.add(l);
+      tree.insert(new Node(l));
+    }
+
+    List<Long> tmpList = new ArrayList<Long>(keys);
+    Collections.sort(tmpList);
+    System.out.println(tmpList);
+    tree.inorderWalk();
+    //
+    long time = 0;
+    for (int i=0 ; i<10 ; i++) {
+      int idx = r.nextInt(keys.size());
+      System.out.println("loop--> "+i+" "+keys.get(idx));
+      Node n = tree.search(keys.get(idx));
+
+      tree.inorderWalk();
+      if (n==null) {
+        System.out.println("null> "+i+" "+keys.get(idx));
+        System.out.println(seed);
+        System.out.println("---------------------------------------------------------");
+        for (Node n : tree.getListInorderWalk()) {
+          System.out.println(""+n.getKey()+" "+n.getParent());
+        }
+        System.out.println("---------------------------------------------------------");
+      }
+
+      long start = System.currentTimeMillis();
+      tree.deleteNode(n);
+      time += System.currentTimeMillis()-start;
+      keys.remove(idx);
+    }
+    System.out.println(time);
+*/
+
 /*
     System.out.println(tree.getHeight());
     System.out.println(tree.successor(tree.search(15L)).getKey());
@@ -316,6 +423,8 @@ public class BinaryTree {
     System.out.println(tree.maximumRec(tree.getRoot()).getKey());
     System.out.println(tree.predecessor(tree.search(15L)).getKey());
 */
+
+
 
   }
 }
