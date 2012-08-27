@@ -157,8 +157,9 @@ public class BinaryTree {
   }
 
   public Node successor(Node x) {
+    //System.out.println("successor> "+x.getKey()+" "+(x.getRight()==null?null:x.getRight().getKey())+" min="+minimum(x));
     if (x.getRight() != null) {
-      return minimum(x);
+      return minimum(x.getRight());
     }
     Node y = x.getParent();
     while (y!=null && x == y.getRight()) {
@@ -222,6 +223,8 @@ public class BinaryTree {
       y = successor(z);
     }
 
+    System.out.println("deleteNode> "+z.getKey()+" "+y.getKey());
+
     Node x;
     if (y.getLeft() != null) {
       x = y.getLeft();
@@ -278,9 +281,11 @@ public class BinaryTree {
       for (int j=0 ; j<nodes.size() ; j++) {
 
         if (i==depths.get(j)) {
-          System.out.printf("%5d",nodes.get(j).getKey());
+          long l = nodes.get(j).getKey();
+          //System.out.printf("%5d"+(l < 0 ? "-" : " "),(int)Math.ceil(Math.log(Math.abs(l))));
+          System.out.printf("%5d",l/(1000L*1000L*1000L*1000L*1000L));
         } else {
-          System.out.print("    ");
+          System.out.print("      ");
         }
       }
       System.out.println("");
@@ -350,15 +355,17 @@ public class BinaryTree {
       System.out.println("loop--> "+i+" "+keys.get(idx));
       Node n = tree.search(keys.get(idx));
 
-      tree.inorderWalk();
+      tree.print();
       if (n==null) {
         System.out.println("null> "+i+" "+keys.get(idx));
         System.out.println(seed);
+        /*
         System.out.println("---------------------------------------------------------");
-        for (Node n : tree.getListInorderWalk()) {
-          System.out.println(""+n.getKey()+" "+n.getParent());
+        for (Node nn : tree.getListInorderWalk()) {
+          System.out.println(""+nn.getKey()+" "+nn.getParent());
         }
         System.out.println("---------------------------------------------------------");
+        */
       }
 
       long start = System.currentTimeMillis();
