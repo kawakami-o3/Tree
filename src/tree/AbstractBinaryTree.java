@@ -152,7 +152,7 @@ abstract public class AbstractBinaryTree<T extends AbstractNode<T>> {
 
   public T successor(T x) {
     if (x.getRight() != getNil()) {
-      return minimum(x);
+      return minimum(x.getRight());
     }
     T y = x.getParent();
     while (y!=getNil() && x == y.getRight()) {
@@ -166,7 +166,12 @@ abstract public class AbstractBinaryTree<T extends AbstractNode<T>> {
     if (x.getLeft() != getNil()) {
       return maximum(x.getLeft());
     }
-    return x.getParent();
+    T y = x.getParent();
+    while (y!=getNil() && x == y.getLeft()) {
+      x = y;
+      y = y.getParent();
+    }
+    return y;
   }
 
   public void insertRec(T x) {
