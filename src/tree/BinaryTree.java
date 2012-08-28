@@ -170,7 +170,12 @@ public class BinaryTree {
     if (x.getLeft() != null) {
       return maximum(x.getLeft());
     }
-    return x.getParent();
+    Node y = x.getParent();
+    while (y!=null && x == y.getLeft()) {
+      x = y;
+      y = y.getParent();
+    }
+    return y;
   }
 
   public void insertRec(Node x) {
