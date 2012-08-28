@@ -77,7 +77,6 @@ public class BinaryTree {
   }
 
   public Node search(Long k) {
-    System.out.println("search-root> "+(root == null ? null : ""+root.getKey()+" "+root.getRight()+" "+root.getLeft()));
     return search(root, k);
   }
 
@@ -85,7 +84,6 @@ public class BinaryTree {
     if (x==null || k.equals(x.getKey())) {
       return x;
     }
-    System.out.println("search> "+x.getKey()+" "+x.getRight()+" "+x.getLeft());
     if (k < x.getKey()) {
       return search(x.getLeft(),k);
     } else {
@@ -157,7 +155,6 @@ public class BinaryTree {
   }
 
   public Node successor(Node x) {
-    //System.out.println("successor> "+x.getKey()+" "+(x.getRight()==null?null:x.getRight().getKey())+" min="+minimum(x));
     if (x.getRight() != null) {
       return minimum(x.getRight());
     }
@@ -222,8 +219,6 @@ public class BinaryTree {
     } else {
       y = successor(z);
     }
-
-    System.out.println("deleteNode> "+z.getKey()+" "+y.getKey());
 
     Node x;
     if (y.getLeft() != null) {
@@ -346,27 +341,13 @@ public class BinaryTree {
 
     List<Long> tmpList = new ArrayList<Long>(keys);
     Collections.sort(tmpList);
-    System.out.println(tmpList);
     tree.inorderWalk();
     //
     long time = 0;
     for (int i=0 ; i<10 ; i++) {
       int idx = r.nextInt(keys.size());
-      System.out.println("loop--> "+i+" "+keys.get(idx));
       Node n = tree.search(keys.get(idx));
 
-      tree.print();
-      if (n==null) {
-        System.out.println("null> "+i+" "+keys.get(idx));
-        System.out.println(seed);
-        /*
-        System.out.println("---------------------------------------------------------");
-        for (Node nn : tree.getListInorderWalk()) {
-          System.out.println(""+nn.getKey()+" "+nn.getParent());
-        }
-        System.out.println("---------------------------------------------------------");
-        */
-      }
 
       long start = System.currentTimeMillis();
       tree.deleteNode(n);
