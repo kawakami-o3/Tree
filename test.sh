@@ -1,6 +1,10 @@
 #!/bin/sh
-set -x
+#set -x
 ant
-java  -cp ./tree.jar tree.BinaryTree
+
+for i in `seq 10`;
+do
+  java  -cp ./tree.jar tree.BinaryTree
+done
 #java  -cp ./tree.jar tree.RedBlack
 #java  -cp ./tree.jar fn.Flib

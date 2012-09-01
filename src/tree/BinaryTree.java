@@ -217,12 +217,14 @@ public class BinaryTree {
     }
   }
 */
+  int cnt=0;
   public Node deleteNode(Node z) {
     Node y;
     if (z.getRight() == null || z.getLeft() == null) {
       y = z;
     } else {
-      y = successor(z);
+      cnt ++;
+      y = cnt%2==0 ? successor(z) : predecessor(z);
     }
 
     Node x;
@@ -330,10 +332,11 @@ public class BinaryTree {
     */
 
     BinaryTree tree = new BinaryTree();
-    long seed = 1828191884974591589L; // new Random().nextLong();
+    //long seed = 1828191884974591589L; // new Random().nextLong();
+    long seed = new Random().nextLong();
     Random r = new Random(seed);
     List<Long> keys = new ArrayList<Long>();
-    for (int i=0 ; i<12 ; i++) {
+    for (int i=0 ; i<100000 ; i++) {
       Long l = r.nextLong();
       for (int j=0 ; j<keys.size() ; j++) {
         if (l.equals(keys.get(j))) {
@@ -346,21 +349,47 @@ public class BinaryTree {
 
     List<Long> tmpList = new ArrayList<Long>(keys);
     Collections.sort(tmpList);
-    tree.inorderWalk();
+    //tree.inorderWalk();
     //
     long time = 0;
-    for (int i=0 ; i<10 ; i++) {
+    for (int i=0 ; i<1000 ; i++) {
       int idx = r.nextInt(keys.size());
       Node n = tree.search(keys.get(idx));
 
 
-      long start = System.currentTimeMillis();
+      long start = System.nanoTime();
+      //long start = System.currentTimeMillis();
       tree.deleteNode(n);
-      time += System.currentTimeMillis()-start;
+      time += System.nanoTime()-start;
+      //time += System.currentTimeMillis()-start;
       keys.remove(idx);
     }
-    System.out.println(time);
-
+    System.out.println("nano sec: "+time);
+/*
+ * successor
+ * nano sec: 1036000
+ * nano sec: 915000
+ * nano sec: 985000
+ * nano sec: 1023000
+ * nano sec: 928000
+ * nano sec: 930000
+ * nano sec: 1007000
+ * nano sec: 920000
+ * nano sec: 978000
+ * nano sec: 1059000
+ *
+ * successor or predeccesor
+ * nano sec: 980000
+ * nano sec: 939000
+ * nano sec: 921000
+ * nano sec: 977000
+ * nano sec: 963000
+ * nano sec: 971000
+ * nano sec: 1026000
+ * nano sec: 1055000
+ * nano sec: 1007000
+ * nano sec: 981000
+ */
     /* 
     BinaryTree tree = new BinaryTree();
     long seed = 1828191884974591589L; // new Random().nextLong();
