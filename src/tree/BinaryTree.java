@@ -33,7 +33,7 @@ public class BinaryTree {
     if (x == null) {
       return height;
     }
-    return Math.max(getHeight(x.getLeft(),height+1),getHeight(x.getRight(),height+1));
+    return Math.max(getHeight(x.getL(),height+1),getHeight(x.getR(),height+1));
   }
 
   public void inorderMap(Block<Node> block) {
@@ -42,9 +42,9 @@ public class BinaryTree {
 
   public void inorderMap(Node x, Block<Node> block) {
     if (x!=null) {
-      inorderMap(x.getLeft(),block);
+      inorderMap(x.getL(),block);
       block.execute(x);
-      inorderMap(x.getRight(),block);
+      inorderMap(x.getR(),block);
     }
   }
 
@@ -56,9 +56,9 @@ public class BinaryTree {
 
   public void inorderWalk(Node x, List<Node> list) {
     if (x != null) {
-      inorderWalk(x.getLeft(), list);
+      inorderWalk(x.getL(), list);
       list.add(x);
-      inorderWalk(x.getRight(), list);
+      inorderWalk(x.getR(), list);
     }
   }
 
@@ -70,9 +70,9 @@ public class BinaryTree {
 
   private void inorderWalk(Node x) {
     if (x!=null) {
-      inorderWalk(x.getLeft());
+      inorderWalk(x.getL());
       System.out.print(", "+x.getKey());
-      inorderWalk(x.getRight());
+      inorderWalk(x.getR());
     }
   }
 
@@ -85,9 +85,9 @@ public class BinaryTree {
       return x;
     }
     if (k < x.getKey()) {
-      return search(x.getLeft(),k);
+      return search(x.getL(),k);
     } else {
-      return search(x.getRight(),k);
+      return search(x.getR(),k);
     }
   }
 
@@ -98,9 +98,9 @@ public class BinaryTree {
   public Node searchIterative(Node x, Long k) {
     while (x != null && (! k.equals(x.getKey()))) {
       if (k < x.getKey()) {
-        x = x.getLeft();
+        x = x.getL();
       } else {
-        x = x.getRight();
+        x = x.getR();
       }
     }
     return x;
@@ -112,9 +112,9 @@ public class BinaryTree {
     while (x!=null) {
       y = x;
       if (z.getKey() < x.getKey()) {
-        x = x.getLeft();
+        x = x.getL();
       } else {
-        x = x.getRight();
+        x = x.getR();
       }
     }
 
@@ -125,41 +125,41 @@ public class BinaryTree {
       root = z;
     } else {
       if (z.getKey() < y.getKey()) {
-        y.setLeft(z);
+        y.setL(z);
       } else {
-        y.setRight(z);
+        y.setR(z);
       }
     }
   }
 
   public Node minimum(Node x) {
-    while (x.getLeft() != null) {
-      x = x.getLeft();
+    while (x.getL() != null) {
+      x = x.getL();
     }
     return x;
   }
 
   public Node maximum(Node x) {
-    while (x.getRight() != null) {
-      x = x.getRight();
+    while (x.getR() != null) {
+      x = x.getR();
     }
     return x;
   }
 
   public Node minimumRec(Node x) {
-    return x.getLeft()==null ? x : minimumRec(x.getLeft());
+    return x.getL()==null ? x : minimumRec(x.getL());
   }
 
   public Node maximumRec(Node x) {
-    return x.getRight()==null ? x : maximumRec(x.getRight());
+    return x.getR()==null ? x : maximumRec(x.getR());
   }
 
   public Node successor(Node x) {
-    if (x.getRight() != null) {
-      return minimum(x.getRight());
+    if (x.getR() != null) {
+      return minimum(x.getR());
     }
     Node y = x.getParent();
-    while (y!=null && x == y.getRight()) {
+    while (y!=null && x == y.getR()) {
       x = y;
       y = y.getParent();
     }
@@ -167,11 +167,11 @@ public class BinaryTree {
   }
 
   public Node predecessor(Node x) {
-    if (x.getLeft() != null) {
-      return maximum(x.getLeft());
+    if (x.getL() != null) {
+      return maximum(x.getL());
     }
     Node y = x.getParent();
-    while (y!=null && x == y.getLeft()) {
+    while (y!=null && x == y.getL()) {
       x = y;
       y = y.getParent();
     }
@@ -189,29 +189,29 @@ public class BinaryTree {
 
   public void insertRecPartial(Node t, Node x) {
     if (x.getKey() < t.getKey()) {
-      if (t.getLeft() == null) {
+      if (t.getL() == null) {
         x.setParent(t);
-        t.setLeft(x);
+        t.setL(x);
       } else {
-        insertRecPartial(t.getLeft(),x);
+        insertRecPartial(t.getL(),x);
       }
     } else {
-      if (t.getRight() == null) {
+      if (t.getR() == null) {
         x.setParent(t);
-        t.setRight(x);
+        t.setR(x);
       } else {
-        insertRecPartial(t.getRight(),x);
+        insertRecPartial(t.getR(),x);
       }
     }
   }
 /*
   public void deleteNode(Node x) {
-    if (x.getRight() == null && x.getLeft() == null) {
+    if (x.getR() == null && x.getL() == null) {
       if (x.getParent() != null) {
-        if (x.getParent().getRight() == x) {
-          x.getParent().setRight(null);
+        if (x.getParent().getR() == x) {
+          x.getParent().setR(null);
         } else {
-          x.getParent().setLeft(null);
+          x.getParent().setL(null);
         }
       }
     }
@@ -220,7 +220,7 @@ public class BinaryTree {
   int cnt=0;
   public Node deleteNode(Node z) {
     Node y;
-    if (z.getRight() == null || z.getLeft() == null) {
+    if (z.getR() == null || z.getL() == null) {
       y = z;
     } else {
       cnt ++;
@@ -228,10 +228,10 @@ public class BinaryTree {
     }
 
     Node x;
-    if (y.getLeft() != null) {
-      x = y.getLeft();
+    if (y.getL() != null) {
+      x = y.getL();
     } else {
-      x = y.getRight();
+      x = y.getR();
     }
 
     if (x!=null) {
@@ -241,10 +241,10 @@ public class BinaryTree {
     if (y.getParent() == null) {
       setRoot(x);
     } else {
-      if (y.getParent().getLeft() == y) {
-        y.getParent().setLeft(x);
+      if (y.getParent().getL() == y) {
+        y.getParent().setL(x);
       } else {
-        y.getParent().setRight(x);
+        y.getParent().setR(x);
       }
     }
 

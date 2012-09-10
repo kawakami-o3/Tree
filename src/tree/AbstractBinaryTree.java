@@ -29,7 +29,7 @@ abstract public class AbstractBinaryTree<T extends AbstractNode<T>> {
     if (x == getNil()) {
       return height;
     }
-    return Math.max(getHeight(x.getLeft(),height+1),getHeight(x.getRight(),height+1));
+    return Math.max(getHeight(x.getL(),height+1),getHeight(x.getR(),height+1));
   }
 
   public void inorderMap(Block<T> block) {
@@ -38,9 +38,9 @@ abstract public class AbstractBinaryTree<T extends AbstractNode<T>> {
 
   public void inorderMap(T x, Block<T> block) {
     if (x!=getNil()) {
-      inorderMap(x.getLeft(),block);
+      inorderMap(x.getL(),block);
       block.execute(x);
-      inorderMap(x.getRight(),block);
+      inorderMap(x.getR(),block);
     }
   }
 
@@ -52,9 +52,9 @@ abstract public class AbstractBinaryTree<T extends AbstractNode<T>> {
 
   public void inorderWalk(T x, List<T> list) {
     if (x != getNil()) {
-      inorderWalk(x.getLeft(), list);
+      inorderWalk(x.getL(), list);
       list.add(x);
-      inorderWalk(x.getRight(), list);
+      inorderWalk(x.getR(), list);
     }
   }
 
@@ -66,9 +66,9 @@ abstract public class AbstractBinaryTree<T extends AbstractNode<T>> {
 
   private void inorderWalk(T x) {
     if (x!=getNil()) {
-      inorderWalk(x.getLeft());
+      inorderWalk(x.getL());
       System.out.print(" "+x.getKey());
-      inorderWalk(x.getRight());
+      inorderWalk(x.getR());
     }
   }
 
@@ -81,9 +81,9 @@ abstract public class AbstractBinaryTree<T extends AbstractNode<T>> {
       return x;
     }
     if (k < x.getKey()) {
-      return search(x.getLeft(),k);
+      return search(x.getL(),k);
     } else {
-      return search(x.getRight(),k);
+      return search(x.getR(),k);
     }
   }
 
@@ -94,9 +94,9 @@ abstract public class AbstractBinaryTree<T extends AbstractNode<T>> {
   public T searchIterative(T x, Long k) {
     while (x != getNil() && (! k.equals(x.getKey()))) {
       if (k < x.getKey()) {
-        x = x.getLeft();
+        x = x.getL();
       } else {
-        x = x.getRight();
+        x = x.getR();
       }
     }
     return x;
@@ -108,9 +108,9 @@ abstract public class AbstractBinaryTree<T extends AbstractNode<T>> {
     while (x!=getNil()) {
       y = x;
       if (z.getKey() < x.getKey()) {
-        x = x.getLeft();
+        x = x.getL();
       } else {
-        x = x.getRight();
+        x = x.getR();
       }
     }
 
@@ -121,41 +121,41 @@ abstract public class AbstractBinaryTree<T extends AbstractNode<T>> {
       root = z;
     } else {
       if (z.getKey() < y.getKey()) {
-        y.setLeft(z);
+        y.setL(z);
       } else {
-        y.setRight(z);
+        y.setR(z);
       }
     }
   }
 
   public T minimum(T x) {
-    while (x.getLeft() != getNil()) {
-      x = x.getLeft();
+    while (x.getL() != getNil()) {
+      x = x.getL();
     }
     return x;
   }
 
   public T maximum(T x) {
-    while (x.getRight() != getNil()) {
-      x = x.getRight();
+    while (x.getR() != getNil()) {
+      x = x.getR();
     }
     return x;
   }
 
   public T minimumRec(T x) {
-    return x.getLeft()==getNil() ? x : minimumRec(x.getLeft());
+    return x.getL()==getNil() ? x : minimumRec(x.getL());
   }
 
   public T maximumRec(T x) {
-    return x.getRight()==getNil() ? x : maximumRec(x.getRight());
+    return x.getR()==getNil() ? x : maximumRec(x.getR());
   }
 
   public T successor(T x) {
-    if (x.getRight() != getNil()) {
-      return minimum(x.getRight());
+    if (x.getR() != getNil()) {
+      return minimum(x.getR());
     }
     T y = x.getParent();
-    while (y!=getNil() && x == y.getRight()) {
+    while (y!=getNil() && x == y.getR()) {
       x = y;
       y = y.getParent();
     }
@@ -163,11 +163,11 @@ abstract public class AbstractBinaryTree<T extends AbstractNode<T>> {
   }
 
   public T predecessor(T x) {
-    if (x.getLeft() != getNil()) {
-      return maximum(x.getLeft());
+    if (x.getL() != getNil()) {
+      return maximum(x.getL());
     }
     T y = x.getParent();
-    while (y!=getNil() && x == y.getLeft()) {
+    while (y!=getNil() && x == y.getL()) {
       x = y;
       y = y.getParent();
     }
@@ -185,35 +185,35 @@ abstract public class AbstractBinaryTree<T extends AbstractNode<T>> {
 
   public void insertRecPartial(T t, T x) {
     if (x.getKey() < t.getKey()) {
-      if (t.getLeft() == getNil()) {
+      if (t.getL() == getNil()) {
         x.setParent(t);
-        t.setLeft(x);
+        t.setL(x);
       } else {
-        insertRecPartial(t.getLeft(),x);
+        insertRecPartial(t.getL(),x);
       }
     } else {
-      if (t.getRight() == getNil()) {
+      if (t.getR() == getNil()) {
         x.setParent(t);
-        t.setRight(x);
+        t.setR(x);
       } else {
-        insertRecPartial(t.getRight(),x);
+        insertRecPartial(t.getR(),x);
       }
     }
   }
 
   public T deleteNode(T z) {
     T y;
-    if (z.getRight() == getNil() || z.getLeft() == getNil()) {
+    if (z.getR() == getNil() || z.getL() == getNil()) {
       y = z;
     } else {
       y = successor(z);
     }
 
     T x;
-    if (y.getLeft() != getNil()) {
-      x = y.getLeft();
+    if (y.getL() != getNil()) {
+      x = y.getL();
     } else {
-      x = y.getRight();
+      x = y.getR();
     }
 
     if (x!=getNil()) {
@@ -223,10 +223,10 @@ abstract public class AbstractBinaryTree<T extends AbstractNode<T>> {
     if (y.getParent() == getNil()) {
       setRoot(x);
     } else {
-      if (y.getParent().getLeft() == y) {
-        y.getParent().setLeft(x);
+      if (y.getParent().getL() == y) {
+        y.getParent().setL(x);
       } else {
-        y.getParent().setRight(x);
+        y.getParent().setR(x);
       }
     }
 

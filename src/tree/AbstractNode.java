@@ -23,12 +23,12 @@ abstract public class AbstractNode<T extends AbstractNode<T>> {
     return (T)this;
   }
  
-  public T setRight(T right) {
+  public T setR(T right) {
     this.right = right;
     return (T)this;
   }
 
-  public T setLeft(T left) {
+  public T setL(T left) {
     this.left = left;
     return (T)this;
   }
@@ -41,11 +41,11 @@ abstract public class AbstractNode<T extends AbstractNode<T>> {
     return parent;
   }
 
-  public T getRight() {
+  public T getR() {
     return right;
   }
 
-  public T getLeft() {
+  public T getL() {
     return left;
   }
 

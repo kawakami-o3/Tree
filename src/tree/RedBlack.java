@@ -13,8 +13,8 @@ public class RedBlack extends AbstractBinaryTree<NodeRB> {
     setRoot(NIL);
 
     NIL.setParent(NIL);
-    NIL.setLeft(NIL);
-    NIL.setRight(NIL);
+    NIL.setL(NIL);
+    NIL.setR(NIL);
   }
 
   public NodeRB getNil() {
@@ -31,12 +31,12 @@ public class RedBlack extends AbstractBinaryTree<NodeRB> {
   }
 */
   public void rotateRight(NodeRB x) {
-    NodeRB y = x.getLeft();
+    NodeRB y = x.getL();
     //System.out.println("rotateRight> "+y);
-    x.setLeft(y.getRight());
+    x.setL(y.getR());
 
-    if (y.getRight() != getNil()) {
-      y.getRight().setParent(x);
+    if (y.getR() != getNil()) {
+      y.getR().setParent(x);
     }
 
     if (y != getNil()) {
@@ -46,25 +46,25 @@ public class RedBlack extends AbstractBinaryTree<NodeRB> {
     if (x.getParent() == getNil()) {
       setRoot(y);
     } else {
-      if (x==x.getParent().getLeft()) {
-        x.getParent().setLeft(y);
+      if (x==x.getParent().getL()) {
+        x.getParent().setL(y);
       } else {
-        x.getParent().setRight(y);
+        x.getParent().setR(y);
       }
     }
 
-    y.setRight(x);
+    y.setR(x);
     if (x != getNil()) {
       x.setParent(y);
     }
   }
 
   public void rotateLeft(NodeRB x) {
-    NodeRB y = x.getRight();
-    x.setRight(y.getLeft());
+    NodeRB y = x.getR();
+    x.setR(y.getL());
 
-    if (y.getLeft() != getNil()) {
-      y.getLeft().setParent(x);
+    if (y.getL() != getNil()) {
+      y.getL().setParent(x);
     }
 
     if (y != getNil()) {
@@ -74,14 +74,14 @@ public class RedBlack extends AbstractBinaryTree<NodeRB> {
     if (x.getParent() == getNil()) {
       setRoot(y);
     } else {
-      if (x==x.getParent().getLeft()) {
-        x.getParent().setLeft(y);
+      if (x==x.getParent().getL()) {
+        x.getParent().setL(y);
       } else {
-        x.getParent().setRight(y);
+        x.getParent().setR(y);
       }
     }
 
-    y.setLeft(x);
+    y.setL(x);
     if (x != getNil()) {
       x.setParent(y);
     }
@@ -94,24 +94,24 @@ public class RedBlack extends AbstractBinaryTree<NodeRB> {
     while (x!=getNil()) {
       y = x;
       if (z.getKey() < x.getKey()) {
-        x = x.getLeft();
+        x = x.getL();
       } else {
-        x = x.getRight();
+        x = x.getR();
       }
     }
 
     z.setParent(y);
-    z.setLeft(getNil());
-    z.setRight(getNil());
+    z.setL(getNil());
+    z.setR(getNil());
     z.setColor(RED);
 
     if (y==getNil()) {
       setRoot(z);
     } else {
       if (z.getKey() < y.getKey()) {
-        y.setLeft(z);
+        y.setL(z);
       } else {
-        y.setRight(z);
+        y.setR(z);
       }
     }
 
@@ -124,15 +124,15 @@ public class RedBlack extends AbstractBinaryTree<NodeRB> {
   public void insertFixUp(NodeRB z) {
     //while (z.getParent().isRed()) {
     while (getRoot() != z && z.getParent().isRed()) {
-      if (z.getParent() == z.getParent().getParent().getLeft()) {
-        NodeRB y = z.getParent().getParent().getRight();
+      if (z.getParent() == z.getParent().getParent().getL()) {
+        NodeRB y = z.getParent().getParent().getR();
         if (y.isRed()) {
           z.getParent().setBlack();
           y.setBlack();
           z.getParent().getParent().setRed();
           z = z.getParent().getParent();
         } else {
-          if (z == z.getParent().getRight()) {
+          if (z == z.getParent().getR()) {
           z = z.getParent();
           rotateLeft(z);
           }
@@ -141,14 +141,14 @@ public class RedBlack extends AbstractBinaryTree<NodeRB> {
           rotateRight(z.getParent().getParent());
         }
       } else {
-        NodeRB y = z.getParent().getParent().getLeft();
+        NodeRB y = z.getParent().getParent().getL();
         if (y.isRed()) {
           z.getParent().setBlack();
           y.setBlack();
           z.getParent().getParent().setRed();
           z = z.getParent().getParent();
         } else {
-          if (z == z.getParent().getLeft()) {
+          if (z == z.getParent().getL()) {
             z = z.getParent();
             rotateRight(z);
           }
@@ -159,6 +159,11 @@ public class RedBlack extends AbstractBinaryTree<NodeRB> {
       }
     }
     getRoot().setColor(BLACK);
+  }
+
+  public NodeRB deleteNode(NodeRB z) {
+    //if (z.getL()
+    return null;
   }
 
 

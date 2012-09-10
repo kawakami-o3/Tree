@@ -1,6 +1,10 @@
 package tree;
 
-public class Node {
+public class Node extends AbstractNode<Node> {
+  public Node(Long key) {
+    super(key);
+  }
+  /*
   private Long key;
   private Node parent;
   private Node right;
@@ -44,6 +48,6 @@ public class Node {
   public Node getLeft() {
     return left;
   }
-
+*/
 }
 
