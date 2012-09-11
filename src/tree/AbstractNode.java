@@ -13,21 +13,25 @@ abstract public class AbstractNode<T extends AbstractNode<T>> {
     left=null;
   }
 
+  @SuppressWarnings("unchecked")
   public T setKey(Long key) {
     this.key = key;
     return (T)this;
   }
 
+  @SuppressWarnings("unchecked")
   public T setParent(T parent) {
     this.parent = parent;
     return (T)this;
   }
  
+  @SuppressWarnings("unchecked")
   public T setR(T right) {
     this.right = right;
     return (T)this;
   }
 
+  @SuppressWarnings("unchecked")
   public T setL(T left) {
     this.left = left;
     return (T)this;
