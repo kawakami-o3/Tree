@@ -1,7 +1,7 @@
 package tree;
 
 //import java.util.Math;
-import static tree.NodeRB.Color.*;
+import static tree.Color.*;
 import java.util.List;
 import java.util.ArrayList;
 
