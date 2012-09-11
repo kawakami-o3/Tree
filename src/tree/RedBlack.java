@@ -116,9 +116,7 @@ public class RedBlack extends AbstractBinaryTree<NodeRB> {
     }
 
 
-    System.out.println("===== "+z.getKey());
     insertFixUp(z);
-    print();
   }
 
   public void insertFixUp(NodeRB z) {
@@ -162,11 +160,103 @@ public class RedBlack extends AbstractBinaryTree<NodeRB> {
   }
 
   public NodeRB deleteNode(NodeRB z) {
-    //if (z.getL()
-    return null;
+    NodeRB y;
+    if (z.getL() == getNil() || z.getR() == getNil()) {
+      y = z;
+    } else {
+      y = successor(z);
+    }
+
+    NodeRB x;
+    if (z.getL() != getNil()) {
+      x = y.getL();
+    } else {
+      x = y.getR();
+    }
+
+    x.setParent(y.getParent());
+
+    if (y.getParent() == getNil()) {
+      setRoot(x);
+    } else {
+      if (y == y.getParent().getL()) {
+        y.getParent().setL(x);
+      } else {
+        y.getParent().setR(x);
+      }
+    }
+
+    if (y!=z) {
+      z.setKey(y.getKey());
+    }
+
+
+    if (y.getColor() == BLACK) {
+      deleteFixUp(x);
+    }
+    return y;
   }
 
+  public void deleteFixUp(NodeRB x) {
+    while (x != getRoot() && x.getColor() == BLACK) {
+      System.out.println(x.getKey());
+      if (x == x.getParent().getL()) {
+        NodeRB w = x.getParent().getR();
+        if (w.getColor() == RED) {
+          w.setColor(BLACK);
+          x.getParent().setColor(RED);
+          rotateLeft(x.getParent());
+          w = x.getParent().getR();
+        }
 
+        if (w.getL().getColor() == BLACK && w.getR().getColor() == BLACK) {
+          w.setColor(RED);
+          x = x.getParent();
+        } else {
+          if (w.getR().getColor() == BLACK) {
+            w.getL().setColor(BLACK);
+            w.setColor(RED);
+            rotateRight(w);
+            w = x.getParent().getR();
+          }
+
+          w.setColor(x.getParent().getColor());
+          x.getParent().setColor(BLACK);
+          w.getR().setColor(BLACK);
+          rotateLeft(x.getParent());
+          x = getRoot();
+        }
+      } else {
+        NodeRB w = x.getParent().getL();
+        if (w.getColor() == RED) {
+          w.setColor(BLACK);
+          x.getParent().setColor(RED);
+          rotateRight(x.getParent());
+          w = x.getParent().getL();
+        }
+
+        if (w.getR().getColor() == BLACK && w.getL().getColor() == BLACK) {
+          w.setColor(RED);
+          x = x.getParent();
+        } else {
+          if (w.getL().getColor() == BLACK) {
+            w.getR().setColor(BLACK);
+            w.setColor(RED);
+            rotateLeft(w);
+            w = x.getParent().getL();
+          }
+
+          w.setColor(x.getParent().getColor());
+          x.getParent().setColor(BLACK);
+          w.getL().setColor(BLACK);
+          rotateRight(x.getParent());
+          x = getRoot();
+        }
+      }
+    }
+
+    x.setColor(BLACK);
+  }
 
   public static RedBlack create(Long ... keys) {
     RedBlack result = new RedBlack();
@@ -229,8 +319,10 @@ public class RedBlack extends AbstractBinaryTree<NodeRB> {
     System.out.println("-----");
     tree.print();
     System.out.println("-----");
-    tree.rotateRight(tree.search(11L));
+    tree.deleteNode(tree.search(12L));
     tree.print();
+    //tree.rotateRight(tree.search(11L));
+    //tree.print();
  
 
     /*
