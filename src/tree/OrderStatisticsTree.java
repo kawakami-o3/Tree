@@ -7,6 +7,22 @@ import java.util.List;
 
 public class OrderStatisticsTree extends AbstractBinaryTree<NodeOS> {
 
+	public static OrderStatisticsTree create(Long... keys) {
+		OrderStatisticsTree result = new OrderStatisticsTree();
+		for (Long i : keys) {
+			result.insert(new NodeOS(i));
+		}
+		return result;
+	}
+
+	public static OrderStatisticsTree create(Integer... keys) {
+		OrderStatisticsTree result = new OrderStatisticsTree();
+		for (Integer i : keys) {
+			result.insert(new NodeOS((long) i));
+		}
+		return result;
+	}
+
 	private NodeOS NIL;
 	
 	public OrderStatisticsTree() {
@@ -115,6 +131,7 @@ public class OrderStatisticsTree extends AbstractBinaryTree<NodeOS> {
 			}
 		}
 
+    sizeUp();
 		insertFixUp(z);
 	}
 
@@ -194,6 +211,8 @@ public class OrderStatisticsTree extends AbstractBinaryTree<NodeOS> {
 		if (y.getColor() == BLACK) {
 			deleteFixUp(x);
 		}
+
+    sizeDown();
 		return y;
 	}
 
@@ -267,21 +286,28 @@ public class OrderStatisticsTree extends AbstractBinaryTree<NodeOS> {
 		x.setColor(BLACK);
 	}
 
-	public static OrderStatisticsTree create(Long... keys) {
-		OrderStatisticsTree result = new OrderStatisticsTree();
-		for (Long i : keys) {
-			result.insert(new NodeOS(i));
-		}
-		return result;
-	}
+  public NodeOS select(NodeOS x, int i) {
+    int r = x.getL().getSize() + 1;
+    if (i == r || x == getNil()) {
+      return x;
+    } else if (i<r) {
+      return select(x.getL(),i);
+    } else {
+      return select(x.getR(),i-r);
+    }
+  }
 
-	public static OrderStatisticsTree create(Integer... keys) {
-		OrderStatisticsTree result = new OrderStatisticsTree();
-		for (Integer i : keys) {
-			result.insert(new NodeOS((long) i));
-		}
-		return result;
-	}
+  public int getRank(NodeOS x) {
+    int r = x.getL().getSize() + 1;
+    NodeOS y = x;
+    while (y!=getRoot()) {
+      if (y == y.getParent().getR()) {
+        r = r + y.getParent().getL().getSize() + 1;
+      }
+      y = y.getParent();
+    }
+    return r;
+  }
 
 	public void print() {
 		List<NodeOS> nodes = getListInorderWalk();
@@ -309,13 +335,35 @@ public class OrderStatisticsTree extends AbstractBinaryTree<NodeOS> {
 		}
 	}
 
+	public void printOrder() {
+		List<NodeOS> nodes = getListInorderWalk();
+
+    for (int j = 0; j < nodes.size(); j++) {
+			NodeOS n = nodes.get(j);
+			System.out.printf("%3d[%2d]", n.getKey(),getRank(n));
+    }
+			
+    System.out.println("");
+	}
+
 	public static void main(String[] args) {
-		OrderStatisticsTree tree = OrderStatisticsTree.create(26, 17, 41, 14, 21, 30, 47, 10, 16, 19,
-				23, 28, 38, 7, 12, 15, 20, 35, 39, 3);
+		OrderStatisticsTree tree = OrderStatisticsTree.create(
+        26, 17, 41, 14, 21,
+        30, 47, 10, 16, 19,
+				23, 28, 38, 7, 12,
+        15, 20, 35, 39, 3);
 		System.out.println("----------------------------------------");
 		tree.print();
 		System.out.println("----------------------------------------");
 		tree.delete(tree.search(12L));
 		tree.print();
+		System.out.println("----------------------------------------");
+    tree.printOrder();
+
+    for (int i=1 ; i<=tree.size() ; i++) {
+      System.out.print(""+tree.select(tree.getRoot(),i).getKey()+" ");
+    }
+    System.out.println("");
+
 	}
 }

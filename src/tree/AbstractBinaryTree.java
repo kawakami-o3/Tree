@@ -5,8 +5,13 @@ import java.util.ArrayList;
 
 abstract public class AbstractBinaryTree<T extends AbstractNode<T>> {
   private T root;
+  private int nodeSize;
 
   abstract public T getNil();
+
+  public AbstractBinaryTree() {
+    nodeSize = 0;
+  }
 
   public void setRoot(T root) {
     //System.out.println("setRoot> " + (this.root == null ? "null" : this.root.getKey()));
@@ -15,6 +20,18 @@ abstract public class AbstractBinaryTree<T extends AbstractNode<T>> {
 
   public T getRoot() {
     return root;
+  }
+
+  public int size() {
+    return nodeSize;
+  }
+
+  protected void sizeUp() {
+    nodeSize++;
+  }
+
+  protected void sizeDown() {
+    nodeSize--;
   }
 
   public int getDepth(T x, int depth) {
