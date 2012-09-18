@@ -131,7 +131,6 @@ public class OrderStatisticsTree extends AbstractBinaryTree<NodeOS> {
 			}
 		}
 
-		sizeUp();
 		insertFixUp(z);
 	}
 
@@ -212,7 +211,6 @@ public class OrderStatisticsTree extends AbstractBinaryTree<NodeOS> {
 			deleteFixUp(x);
 		}
 
-		sizeDown();
 		return y;
 	}
 
@@ -330,6 +328,10 @@ public class OrderStatisticsTree extends AbstractBinaryTree<NodeOS> {
 			y = y.getParent();
 		}
 		return r;
+	}
+
+	public int size() {
+		return getRoot().getSize();
 	}
 
 	public void print() {
