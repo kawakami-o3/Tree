@@ -175,7 +175,6 @@ public class OrderStatisticsTree extends AbstractBinaryTree<NodeOS> {
 	}
 
 	public NodeOS delete(NodeOS z) {
-		resizeForDelete(z);
 
 		NodeOS y;
 		if (z.getL() == getNil() || z.getR() == getNil()) {
@@ -183,6 +182,7 @@ public class OrderStatisticsTree extends AbstractBinaryTree<NodeOS> {
 		} else {
 			y = successor(z);
 		}
+		resizeForDelete(y);
 
 		NodeOS x;
 		if (z.getL() != getNil()) {
